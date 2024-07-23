@@ -1,0 +1,24 @@
+.login-container {
+    max-width: 400px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrar el formulario horizontalmente */
+    margin-top: 60px;
+    padding: 20px; /* Relleno alrededor del formulario */
+    background-color: #f9f9f9; /* Color de fondo ligero */
+    border: 1px solid #ccc; /* Borde ligero alrededor del formulario */
+    border-radius: 8px; /* Esquinas redondeadas */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+form .form-label {
+    font-weight: bold; /* Hacer que las etiquetas sean negritas */
+}
+
+form .form-text {
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño para el texto de ayuda */
+}
+
+form .btn {
+    width: 100%; /* Botón de ancho completo */
+    padding: 10px; /* Espaciado interno del botón */
+    font-size: 1rem; /* Tamaño de fuente del botón */
+}

@@ -1,0 +1,51 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Fondo claro */
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Estilos para los mensajes de autenticación */
+p[ng-reflect-ng-if="!userLoginOn"] {
+    color: #d9534f; /* Rojo */
+    font-weight: bold;
+    background-color: #f9d6d5; /* Fondo rojo claro */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+p[ng-reflect-ng-if="userLoginOn"] {
+    color: #5cb85c; /* Verde */
+    font-weight: bold;
+    background-color: #dff0d8; /* Fondo verde claro */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Estilos para la información del usuario */
+div {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-top: 20px;
+}
+
+div p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+div p:first-of-type {
+    margin-top: 0;
+}
+
+div p:last-of-type {
+    margin-bottom: 0;
+}
