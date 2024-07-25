@@ -1,0 +1,65 @@
+<form [formGroup]="registerForm">
+    <p class="text-danger">{{registerError}}</p>
+
+    <div class="mb-3">
+        <label for="firstname" class="form-label">First Name</label>
+        <input formControlName="firstName" type="text" class="form-control" id="firstname">
+        <div *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)" class="text-danger">
+            <div *ngIf="firstname.hasError('required')">First Name is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Last Name</label>
+        <input formControlName="lastName" type="text" class="form-control" id="lastname">
+        <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="text-danger">
+            <div *ngIf="lastname.hasError('required')">Last Name is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input formControlName="country" type="text" class="form-control" id="country">
+        <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
+            <div *ngIf="country.hasError('required')">Country is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input formControlName="username" type="text" class="form-control" id="username">
+        <div *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
+            <div *ngIf="username.hasError('required')">Username is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input formControlName="password" type="password" class="form-control" id="password">
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+            <div *ngIf="password.hasError('required')">Password is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select id="role" formControlName="role" class="form-control">
+            <option value="" disabled selected>Seleccione un rol</option>
+            <option value="PATIENT">Patient</option>
+            <option value="DOCTOR">Doctor</option>
+        </select>
+        <div *ngIf="role.invalid && (role.dirty || role.touched)" class="text-danger">
+            <div *ngIf="role.hasError('required')">Role is required.</div>
+        </div>
+    </div>
+
+    <div class="mb-3" *ngIf="registerForm.get('role')?.value === 'DOCTOR'">
+        <label for="license" class="form-label">License</label>
+        <input formControlName="license" type="text" class="form-control" id="license">
+        <div *ngIf="license.invalid && (license.dirty || license.touched)" class="text-danger">
+            <div *ngIf="license.hasError('required')">License is required.</div>
+        </div>
+    </div>
+
+    <button type="submit" (click)="register()" class="btn btn-primary">Register</button>
+</form>

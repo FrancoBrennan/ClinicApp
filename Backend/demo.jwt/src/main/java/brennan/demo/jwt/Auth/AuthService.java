@@ -33,13 +33,16 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
+        Role role = Role.valueOf(request.getRole().toUpperCase());
+
         User user = User.builder()
             .username(request.getUsername())
             .password(passwordEncoder.encode( request.getPassword()))
             .firstname(request.getFirstName())
             .lastname(request.lastName)
             .country(request.getCountry())
-            .role(Role.USER)
+            .license(request.getLicense())
+            .role(role)
             .build();
 
         userRepository.save(user);

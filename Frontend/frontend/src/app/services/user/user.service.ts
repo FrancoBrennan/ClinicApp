@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { User } from '../auth/user';
 import { environment } from '../../../environments/environment';
+import { LoginService } from '../auth/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,13 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  getUser(id:number):Observable<User>{
-    return this.http.get<User>(environment.urlApi+"user/"+id).pipe(
+  getUserByUsername(username: String): Observable<User> {
+    return this.http.get<User>(`${environment.urlApi}user/username/${username}`).pipe(
       catchError(this.handleError)
-    )
+    );
   }
+  
+  
 
   updateUser(userRequest:User):Observable<any>
   {

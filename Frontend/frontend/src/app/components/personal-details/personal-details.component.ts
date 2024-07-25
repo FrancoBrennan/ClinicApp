@@ -5,6 +5,7 @@ import { LoginService } from '../../services/auth/login.service';
 import { User } from '../../services/auth/user';
 import { UserService } from '../../services/user/user.service';
 import { environment } from '../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class PersonalDetailsComponent  {
   user?:User;
   userLoginOn:boolean=false;
   editMode:boolean=false;
+  private subscriptions: Subscription = new Subscription();
 
   registerForm=this.formBuilder.group({
     id:[''],
@@ -25,29 +27,49 @@ export class PersonalDetailsComponent  {
     country:['',Validators.required]
   })
 
-  constructor(private userService:UserService, private formBuilder:FormBuilder, private loginService:LoginService){
-    this.userService.getUser(environment.userId).subscribe({
-      next: (userData) => {
-        this.user=userData;
-        this.registerForm.controls.id.setValue(userData.id.toString());
-        this.registerForm.controls.firstname.setValue( userData.firstname);
-        this.registerForm.controls.lastname.setValue( userData.lastname);
-        this.registerForm.controls.country.setValue( userData.country);
-      },
-      error: (errorData) => {
-        this.errorMessage=errorData
-      },
-      complete: () => {
-        console.info("User Data ok");
-      }
-    })
+  constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {
+    this.loadUserData();
+    this.subscriptions.add(
+      this.loginService.userLoginOn.subscribe(userLoginOn => {
 
-    this.loginService.userLoginOn.subscribe({
-      next:(userLoginOn) => {
         this.userLoginOn=userLoginOn;
-      }
-    })
-    
+
+        if (!userLoginOn) {
+          this.clearForm();
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  private loadUserData() {
+    const username = this.loginService.getUsernameFromToken();
+    if (username) {
+      this.userService.getUserByUsername(username).subscribe({
+        next: userData => {
+          this.user = userData;
+          this.registerForm.setValue({
+            id: userData.id.toString(),
+            firstname: userData.firstname,
+            lastname: userData.lastname,
+            country: userData.country
+          });
+        },
+        error: errorData => {
+          this.errorMessage = errorData.message;
+        }
+      });
+    } else {
+      this.errorMessage = "No se pudo obtener el nombre de usuario.";
+    }
   }
 
   get firstname()
@@ -77,6 +99,12 @@ export class PersonalDetailsComponent  {
         error:(errorData)=> console.error(errorData)
       })
     }
+  }
+
+  private clearForm() {
+    this.registerForm.reset();
+    this.user = undefined;
+    this.errorMessage = "";
   }
 
 }

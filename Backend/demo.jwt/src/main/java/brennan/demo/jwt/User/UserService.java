@@ -11,16 +11,18 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(UserRequest userRequest) {
-       
+        Role role = Role.valueOf(userRequest.getRole().toUpperCase());
+
         User user = User.builder()
         .id(userRequest.id)
         .firstname(userRequest.getFirstname())
         .lastname(userRequest.lastname)
         .country(userRequest.getCountry())
-        .role(Role.USER)
+        .license(userRequest.getLicense())
+        .role(role)
         .build();
         
-        userRepository.updateUser(user.id, user.firstname, user.lastname, user.country);
+        userRepository.updateUser(user.id, user.firstname, user.lastname, user.country, user.license);
 
         return new UserResponse("El usuario se modificó satisfactoriamente");
     }
@@ -36,6 +38,28 @@ public class UserService {
             .firstname(user.firstname)
             .lastname(user.lastname)
             .country(user.country)
+            .license(user.getLicense())
+            .role(user.role.toString())
+            .build();
+            return userDTO;
+        }
+        return null;
+    }
+
+    public UserDTO getUser(String username) {
+        User user= userRepository.findByUsername(username).orElse(null);
+       
+        if (user!=null)
+        {
+
+            UserDTO userDTO = UserDTO.builder()
+            .id(user.id)
+            .username(user.username)
+            .firstname(user.firstname)
+            .lastname(user.lastname)
+            .country(user.country)
+            .license(user.getLicense())
+            .role(user.role.toString())
             .build();
             return userDTO;
         }

@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit{
   login(){
 
     if(this.loginForm.valid){
+      
       this.loginService.login(this.loginForm.value as LoginRequest).subscribe({
         
         next: (userData) => {
@@ -51,8 +52,6 @@ export class LoginComponent implements OnInit{
         }
 
       })
-
-      
 
     }
     else{

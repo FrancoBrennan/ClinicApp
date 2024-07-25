@@ -13,6 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PersonalDetailsComponent } from './components/personal-details/personal-details.component';
 import { JwtInterceptorService } from './services/auth/jwt-interceptor.service';
 import { ErrorInterceptorService } from './services/auth/error-interceptor.service';
+import { HomeComponent } from './pages/home/home/home.component';
+import { UserRegisterComponent } from './auth/register/userRegister/user-register.component';
+
 
 
 @NgModule({
@@ -23,7 +26,9 @@ import { ErrorInterceptorService } from './services/auth/error-interceptor.servi
     DashboardComponent,
     LoginComponent,
     NavComponent,
-    PersonalDetailsComponent
+    PersonalDetailsComponent,
+    UserRegisterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

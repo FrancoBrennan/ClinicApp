@@ -15,4 +15,6 @@ public class UserRequest {
     String firstname;
     String lastname;
     String country;
+    String license;
+    String role;
 }

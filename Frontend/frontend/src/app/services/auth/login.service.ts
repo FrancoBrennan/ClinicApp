@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError, BehaviorSubject, tap, map } from 'rxjs';
 import { User } from "./user";
 import { environment } from '../../../environments/environment';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,7 @@ export class LoginService {
 
   logout():void{
     sessionStorage.removeItem("token"); //Remuevo el token del sessionStorage.
+    this.currentUserData.next("");
     this.currentUserLoginOn.next(false); //Le avisa a tods los componentes que esten suscriptos a este servicio que ya no tienen más acceso.
   }
 
@@ -64,6 +66,14 @@ export class LoginService {
     return throwError(() => new Error("Algo falló. Por favor intente nuevamente"))
   }
 
+  getUsernameFromToken(): String | null {
+    const token = this.currentUserData.value;
+    if (token) {
+      const decodedToken: any = jwtDecode(token.toString());
+      return decodedToken.sub;  // Assuming the username is stored in the "sub" claim
+    }
+    return null;
+  }
 
   //Los gets son para que los componentes se puedan suscribir.
 

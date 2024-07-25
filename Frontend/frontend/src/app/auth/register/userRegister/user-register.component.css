@@ -8,7 +8,6 @@ form {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Agrega desplazamiento vertical si es necesario */
     max-height: 80vh; /* Limita la altura del formulario */
-    margin-top: 70px;
 }
 
 form .text-danger {

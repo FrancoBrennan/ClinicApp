@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserService userService;
     
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "id/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Integer id)
     {
         UserDTO userDTO = userService.getUser(id);
@@ -34,4 +34,16 @@ public class UserController {
     {
         return ResponseEntity.ok(userService.updateUser(userRequest));
     }
+
+    @GetMapping(value = "username/{username}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable String username)
+    {
+        UserDTO userDTO = userService.getUser(username);
+        if (userDTO==null)
+        {
+           return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userDTO);
+    }
+
 }
