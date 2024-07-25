@@ -1,130 +1,130 @@
 # ClinicApp
 
-ClinicApp es una aplicación web diseñada para gestionar el registro y la autenticación de usuarios como pacientes o médicos, y proporcionar una plataforma de chat en vivo entre médicos y pacientes. La aplicación está compuesta por un backend desarrollado con Spring Boot y un frontend hecho con Angular. Además, incluye un servidor de chat en vivo implementado con Node.js y Express.js.
+ClinicApp is a web application designed to manage user registration and authentication as patients or doctors and provide a live chat platform between doctors and patients. The application consists of a backend developed with Spring Boot and a frontend made with Angular. Additionally, it includes a live chat server implemented with Node.js and Express.js.
 
-## Características Actuales
+## Current Features
 
-- Registro de usuarios como pacientes.
-- Inicio de sesión y autenticación utilizando JSON Web Tokens (JWT).
-- Los pacientes pueden ver sus datos personales.
+- User registration as patients.
+- Login and authentication using JSON Web Tokens (JWT).
+- Patients can view their personal data.
 
-### Funcionalidades en Desarrollo
+### Features in Development
 
-- Gestión de permisos basada en roles (paciente y médico).
-- Chat en vivo entre médicos y pacientes.
-- Los médicos podrán ver y modificar sus datos personales y ver los datos de los pacientes.
+- Role-based permission management (patient and doctor).
+- Live chat between doctors and patients.
+- Doctors will be able to view and modify their personal data and see patient data.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 ### Backend
 
-- **Spring Boot**: Framework para el desarrollo del backend.
-- **Spring Security**: Manejo de autenticación y autorización.
-- **JSON Web Tokens (JWT)**: Autenticación basada en tokens.
-- **MySQL**: Base de datos relacional para almacenar la información de los usuarios.
+- **Spring Boot**: Framework for backend development.
+- **Spring Security**: Authentication and authorization management.
+- **JSON Web Tokens (JWT)**: Token-based authentication.
+- **MySQL**: Relational database for storing user information.
 
 ### Frontend
 
-- **Angular**: Framework para el desarrollo del frontend.
-- **HTML/CSS**: Estructura y estilos de la aplicación web.
+- **Angular**: Framework for frontend development.
+- **HTML/CSS**: Structure and styles of the web application.
 
-### Chat en Vivo
+### Live Chat
 
-- **Node.js**: Entorno de ejecución para el servidor de chat.
-- **Express.js**: Framework para el servidor de chat.
-- **Socket.io**: Biblioteca para la implementación de websockets.
+- **Node.js**: Runtime environment for the chat server.
+- **Express.js**: Framework for the chat server.
+- **Socket.io**: Library for implementing WebSockets.
 
-## Estructura del Proyecto
+## Project Structure
 
-- **Backend/**: Contiene el código del backend desarrollado con Spring Boot.
-- **Frontend/**: Contiene el código del frontend desarrollado con Angular.
-- **Chat/**: Contiene el código del servidor de chat desarrollado con Node.js y Express.js.
+- **Backend/**: Contains the backend code developed with Spring Boot.
+- **Frontend/**: Contains the frontend code developed with Angular.
+- **Chat/**: Contains the chat server code developed with Node.js and Express.js.
 
-## Configuración del Proyecto
+## Project Setup
 
-### Requisitos Previos
+### Prerequisites
 
 - **Java**
 - **Node.js**
 - **MySQL**
 
-### Configuración del Backend
+### Backend Setup
 
-1. Clonar el repositorio:
+1. Clone the repository:
 
     ```sh
     git clone https://github.com/FrancoBrennan/ClinicApp.git
     ```
 
-2. Navegar al directorio del backend:
+2. Navigate to the backend directory:
 
     ```sh
     cd ClinicApp/Backend/demo.jwt
     ```
 
-3. Configurar la base de datos MySQL en el archivo `application.properties`:
+3. Configure the MySQL database in the `application.properties` file:
 
     ```properties
     spring.datasource.url=jdbc:mysql://localhost:3306/clinicapp
-    spring.datasource.username=tu_usuario
-    spring.datasource.password=tu_contraseña
+    spring.datasource.username=your_username
+    spring.datasource.password=your_password
     spring.jpa.hibernate.ddl-auto=update
     spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
     ```
 
-4. Ejecutar la aplicación Spring Boot:
+4. Run the Spring Boot application:
 
     ```sh
     ./mvnw spring-boot:run
     ```
 
-### Configuración del Frontend
+### Frontend Setup
 
-1. Navegar al directorio del frontend:
+1. Navigate to the frontend directory:
 
     ```sh
     cd ClinicApp/Frontend/frontend
     ```
 
-2. Instalar las dependencias:
+2. Install dependencies:
 
     ```sh
     npm install
     ```
 
-3. Ejecutar la aplicación Angular:
+3. Run the Angular application:
 
     ```sh
     ng serve
     ```
 
-### Configuración del Chat en Vivo
+### Live Chat Setup
 
-1. Navegar al directorio del servidor de chat:
+1. Navigate to the chat server directory:
 
     ```sh
     cd ClinicApp/Chat
     ```
 
-2. Instalar las dependencias:
+2. Install dependencies:
 
     ```sh
     npm install
     ```
 
-3. Ejecutar el servidor de chat:
+3. Run the chat server:
 
     ```sh
     node server.js
     ```
 
-## Uso de la Aplicación
+## Application Usage
 
-1. **Registro**: Los usuarios pueden registrarse como pacientes o médicos.
-2. **Inicio de Sesión**: Los usuarios pueden iniciar sesión y recibir un token JWT.
-3. **Datos Personales**: Las funcionalidades para que los médicos puedan ver y editar sus datos, y los pacientes solo puedan ver sus datos están en desarrollo.
-4. **Chat en Vivo**: Los médicos y pacientes pueden comunicarse en tiempo real a través del chat en vivo.
+1. **Registration**: Users can register as patients or doctors.
+2. **Login**: Users can log in and receive a JWT token.
+3. **Personal Data**: Features for doctors to view and edit their data, and for patients to view only their data, are under development.
+4. **Live Chat**: Doctors and patients can communicate in real-time via live chat.
 
-## Contribuciones
+## Contributions
 
-Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para mejoras o correcciones.
+Contributions are welcome. Please open an issue or submit a pull request for improvements or fixes.
