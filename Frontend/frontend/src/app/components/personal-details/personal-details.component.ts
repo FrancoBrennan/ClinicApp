@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from '../../services/auth/login.service';
 import { User } from '../../services/auth/user';
 import { UserService } from '../../services/user/user.service';
-import { environment } from '../../../environments/environment';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -13,31 +12,30 @@ import { Subscription } from 'rxjs';
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.css']
 })
-export class PersonalDetailsComponent  {
-  errorMessage:String="";
-  user?:User;
-  userLoginOn:boolean=false;
-  editMode:boolean=false;
+export class PersonalDetailsComponent implements OnDestroy {
+  errorMessage: String = "";
+  user?: User;
+  userLoginOn: boolean = false;
+  editMode: boolean = false;
   private subscriptions: Subscription = new Subscription();
 
-  registerForm=this.formBuilder.group({
-    id:[''],
-    lastname:['',Validators.required],
-    firstname:['', Validators.required],
-    country:['',Validators.required]
-  })
+  registerForm = this.formBuilder.group({
+    id: [''],
+    lastname: ['', Validators.required],
+    firstname: ['', Validators.required],
+    country: ['', Validators.required]
+  });
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private loginService: LoginService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.loadUserData();
     this.subscriptions.add(
-      this.loginService.userLoginOn.subscribe(userLoginOn => {
-
-        this.userLoginOn=userLoginOn;
+      this.authService.isLoggedIn().subscribe(userLoginOn => {
+        this.userLoginOn = userLoginOn;
 
         if (!userLoginOn) {
           this.clearForm();
@@ -51,7 +49,7 @@ export class PersonalDetailsComponent  {
   }
 
   private loadUserData() {
-    const username = this.loginService.getUsernameFromToken();
+    const username = this.authService.getUsernameFromToken();
     if (username) {
       this.userService.getUserByUsername(username).subscribe({
         next: userData => {
@@ -72,31 +70,26 @@ export class PersonalDetailsComponent  {
     }
   }
 
-  get firstname()
-  {
+  get firstname() {
     return this.registerForm.controls.firstname;
   }
 
-  get lastname()
-  {
+  get lastname() {
     return this.registerForm.controls.lastname;
   }
 
-  get country()
-  {
+  get country() {
     return this.registerForm.controls.country;
   }
 
-  savePersonalDetailsData()
-  {
-    if (this.registerForm.valid)
-    {
+  savePersonalDetailsData() {
+    if (this.registerForm.valid) {
       this.userService.updateUser(this.registerForm.value as unknown as User).subscribe({
-        next:() => {
-          this.editMode=false;
-          this.user=this.registerForm.value as unknown as User;
+        next: () => {
+          this.editMode = false;
+          this.user = this.registerForm.value as unknown as User;
         },
-        error:(errorData)=> console.error(errorData)
+        error: (errorData) => console.error(errorData)
       })
     }
   }
@@ -106,5 +99,4 @@ export class PersonalDetailsComponent  {
     this.user = undefined;
     this.errorMessage = "";
   }
-
 }

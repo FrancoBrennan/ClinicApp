@@ -12,6 +12,12 @@
           <li *ngIf="userLoginOn" class="nav-item">
             <a class="nav-link active" routerLink="/dashboard">Dashboard</a>
           </li>
+          <li *ngIf="userLoginOn && isDoctor" class="nav-item">
+            <a class="nav-link" routerLink="/patient-list">Patient List</a>
+          </li>
+          <li *ngIf="userLoginOn" class="nav-item">
+            <a class="nav-link" routerLink="/chat">Chat</a>
+          </li>
           <li *ngIf="!userLoginOn" class="nav-item">
             <a class="nav-link" routerLink="/login">Log In</a>
           </li>

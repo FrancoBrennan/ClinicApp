@@ -18,7 +18,9 @@ export class UserService {
     );
   }
   
-  
+  getPatients(): Observable<User[]> {
+    return this.http.get<User[]>(environment.urlApi+"user/patients");
+  }
 
   updateUser(userRequest:User):Observable<any>
   {

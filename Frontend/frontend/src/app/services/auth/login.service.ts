@@ -75,6 +75,16 @@ export class LoginService {
     return null;
   }
 
+  getRoleFromToken(): String | null {
+    const token = this.currentUserData.value;
+    if (token) {
+      const decodedToken: any = jwtDecode(token.toString());
+      console.log(decodedToken)
+      return decodedToken.role;  // Assuming the username is stored in the "sub" claim
+    }
+    return null;
+  }
+
   //Los gets son para que los componentes se puedan suscribir.
 
   get userData():Observable<String>{

@@ -1,5 +1,7 @@
 package brennan.demo.jwt.User;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +66,9 @@ public class UserService {
             return userDTO;
         }
         return null;
+    }
+
+    public List<User> getPatients() {
+        return this.userRepository.findAllByRole(Role.PATIENT);
     }
 }

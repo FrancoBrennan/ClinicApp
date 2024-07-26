@@ -1,5 +1,8 @@
 package brennan.demo.jwt.User;
 
+import java.util.List;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,13 @@ public class UserController {
            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping(value = "patients")
+    public ResponseEntity<List<User>> getPatients(){
+        List<User> patients = this.userService.getPatients();
+
+        return ResponseEntity.ok(patients);
     }
 
 }

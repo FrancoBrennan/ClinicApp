@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/auth/login.service';
 import { Router } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit{
     userLoginOn:boolean=false;
+    isDoctor:boolean=false;
 
     constructor(private loginService:LoginService, private router:Router){}
 
@@ -16,6 +17,8 @@ export class NavComponent implements OnInit{
       this.loginService.currentUserLoginOn.subscribe({
         next:(userLoginOn) =>{
           this.userLoginOn=userLoginOn; //De esta manera le asignamos a nuestra variable local el valor acerca de si está logueado o no.
+          console.log(this.loginService.getRoleFromToken())
+          this.isDoctor=(this.loginService.getRoleFromToken() === 'DOCTOR')
         }
       } //Acá sabremos si está logueado o no.
     )

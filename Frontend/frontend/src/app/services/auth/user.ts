@@ -6,4 +6,6 @@ export interface User{
     lastname:string;
     firstname:string;
     country:string;
+    license:string;
+    role:string;
 }

@@ -1,0 +1,20 @@
+<section id="chat" class="chat-container">
+  <div class="chat-header">
+    <h2>Chat en Vivo</h2>
+  </div>
+  <ul id="messages" class="chat-messages" #messages>
+    <div class="comentarios">
+        <div class="comentario burbuja my-message">
+          <li>
+            <p>Mensaje de prueba</p>
+            <small>Usuario</small>
+          </li>
+        </div>
+      </div>
+      
+  </ul>
+  <form id= form (ngSubmit)="sendMessage()" class="chat-input">
+    <input type="text" [(ngModel)]="message" name="message" id="input" placeholder="Type a message" autocomplete="off">
+    <button type="submit">Enviar</button>
+  </form>
+</section>

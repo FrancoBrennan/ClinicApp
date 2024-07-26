@@ -20,7 +20,9 @@ public class JwtService {
     private static final String SECRET_KEY= "S86HD84HE832H2IDN384854782ND8347858932N93284892HE82";
 
     public String getToken(UserDetails user) { //Sigue compilando ya que nuestro objeto User implementa la interface UserDetails.
-        return getToken(new HashMap<>(), user);
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", user.getAuthorities().iterator().next().getAuthority());
+        return getToken(extraClaims, user);
     }
 
     public String getToken(Map<String,Object> extraClaims, UserDetails user) {  //En esta función se va a generar nuiestro token.

@@ -7,12 +7,14 @@ ClinicApp is a web application designed to manage user registration and authenti
 - User registration as patients.
 - Login and authentication using JSON Web Tokens (JWT).
 - Patients can view their personal data.
-
-### Features in Development
-
 - Role-based permission management (patient and doctor).
 - Live chat between doctors and patients.
 - Doctors will be able to view and modify their personal data and see patient data.
+
+### Features in Development
+
+- **Chat Rooms**: Creating distinct chat rooms for communication between doctors and patients to better organize conversations.
+- **Server Deployment**: Preparing and configuring the application for deployment to a production server.
 
 ## Technologies Used
 
