@@ -4,6 +4,7 @@ import { RegisterService } from '../../../services/auth/register.service';
 import { Router } from '@angular/router';
 import { RegisterRequest } from '../../../services/auth/registerRequest';
 
+
 @Component({
   selector: 'app-user-register',  // Actualiza el selector
   templateUrl: './user-register.component.html',  // Actualiza la ruta del template
@@ -20,16 +21,24 @@ export class UserRegisterComponent implements OnInit{
     lastName: ["", [Validators.required]],
     country: ["", [Validators.required]],
     role: ["", [Validators.required]],
-    license:["",[Validators.required]]
+    license:["",]
   }) //{ validator: this.passwordMatchValidator });
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private registerService: RegisterService
+    private registerService: RegisterService,
   ) { }
 
   ngOnInit(): void {
+    this.role.valueChanges.subscribe(role => {
+      if (role === 'DOCTOR') {
+        this.license.setValidators([Validators.required]);
+      } else {
+        this.license.clearValidators();
+      }
+      this.license.updateValueAndValidity();
+    });
   }
 
   get username() {
@@ -90,6 +99,7 @@ export class UserRegisterComponent implements OnInit{
         },
         complete: () => {
           console.log("Register complete");
+
           this.router.navigateByUrl("/login");
           this.registerForm.reset();
         }

@@ -71,4 +71,8 @@ public class UserService {
     public List<User> getPatients() {
         return this.userRepository.findAllByRole(Role.PATIENT);
     }
+
+    public List<User> getDoctors() {
+        return this.userRepository.findAllByRole(Role.DOCTOR);
+    }
 }

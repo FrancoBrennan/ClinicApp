@@ -1,33 +1,99 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2, OnDestroy } from '@angular/core';
 import { SocketService } from '../../services/chat/socket.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
+import { SharedService } from '../../services/shared/shared-service.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
-  @ViewChild('messages', { static: true })
-  messages!: ElementRef;
+export class ChatComponent implements OnInit, OnDestroy {
+  @ViewChild('messages', { static: true }) messages!: ElementRef;
   message: string = '';
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private socketService: SocketService, private renderer: Renderer2) { }
+  doctorUsername: string | null = null;
+  patientUsername: string | null = null;
+  roomName=""
+  private isInChat = false; // Flag to track if user is currently in the chat
+
+  constructor(
+    private socketService: SocketService,
+    private renderer: Renderer2,
+    private router: Router,
+    private sharedService:SharedService,
+    private authService:AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.socketService.getMessages().subscribe(({ text, username }) => {
-      this.addMessageToChat(text, username);
+    // Suscribirse a los cambios en los nombres de usuario
+    /*this.sharedService.usernames$.pipe(takeUntil(this.unsubscribe$)).subscribe(usernames => {
+      const doctorUsername = usernames.doctor;
+      const patientUsername = usernames.patient;
+
+      if (doctorUsername && patientUsername) {
+        this.roomName = `chat-${doctorUsername}-${patientUsername}`;
+        console.log(this.roomName);
+        this.socketService.joinRoom(this.roomName);
+        this.isInChat = true;
+        this.scrollToBottom();
+      }
     });
+*/
+
+    this.doctorUsername=sessionStorage.getItem("doctor")
+    this.patientUsername=sessionStorage.getItem("patient")
+
+    if (this.doctorUsername && this.patientUsername) {
+      this.roomName = `chat-${this.doctorUsername}-${this.patientUsername}`;
+      console.log(this.roomName);
+      this.socketService.joinRoom(this.roomName);
+      this.isInChat = true;
+      this.scrollToBottom();
+    }
+
+    // Escuchar el evento de recepción de mensajes
+    this.socketService.messages$.subscribe(messages => {
+      messages.forEach(message => {
+        if (message.room === this.roomName) {
+          this.addMessageToChat(message.content, message.user);
+        }
+      });
+    });
+
+    
+  }
+
+  checkAndJoinRoom(): void {
+    if (this.doctorUsername && this.patientUsername) {
+      this.roomName = `chat-${this.doctorUsername.toString()}-${this.patientUsername.toString()}`;
+      console.log(this.roomName)
+      this.socketService.joinRoom(this.roomName);
+      this.isInChat = true;
+      
+    }
+  }
+  
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   sendMessage(): void {
     if (this.message.trim()) {
-      this.socketService.sendMessage(this.message);
+      this.socketService.sendMessage(this.roomName, this.message, this.authService.getUsernameFromToken()?.toString() as string);
       this.message = '';
     }
   }
 
   addMessageToChat(msg: string, username: string): void {
-    const isOwnMessage = username === this.socketService.getUsername();
+    console.log('Adding message to chat:', msg, 'from:', username);
+    const isOwnMessage = username === this.authService.getUsernameFromToken();
     const messageClass = isOwnMessage ? 'my-message' : 'other-message';
 
     const comentariosDiv = this.renderer.createElement('div');
@@ -55,11 +121,15 @@ export class ChatComponent implements OnInit {
     this.renderer.appendChild(comentariosDiv, comentarioDiv);
 
     this.renderer.appendChild(this.messages.nativeElement, comentariosDiv);
-    this.scrollToBottom();
+    
+    this.scrollToBottom()
   }
 
-  scrollToBottom(): void {
-    const element = this.messages.nativeElement;
-    element.scrollTop = element.scrollHeight;
+  private scrollToBottom(): void {
+    try {
+      this.messages.nativeElement.scrollTop = this.messages.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Could not scroll to bottom', err);
+    }
   }
 }

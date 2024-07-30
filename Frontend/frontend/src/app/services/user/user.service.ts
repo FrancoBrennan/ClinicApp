@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { User } from '../auth/user';
 import { environment } from '../../../environments/environment';
-import { LoginService } from '../auth/login.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,10 @@ export class UserService {
   
   getPatients(): Observable<User[]> {
     return this.http.get<User[]>(environment.urlApi+"user/patients");
+  }
+
+  getDoctors() {
+    return this.http.get<User[]>(environment.urlApi+"user/doctors");
   }
 
   updateUser(userRequest:User):Observable<any>

@@ -4,10 +4,11 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './auth/login/login.component';
 import { UserRegisterComponent } from './auth/register/userRegister/user-register.component';
 import { HomeComponent } from './pages/home/home/home.component';
-import { PatientListComponent } from './components/patient-list/patient-list/patient-list.component';
+import { PatientListComponent } from './components/lists/patient list/patient-list.component';
 import { AuthGuard } from './auth/auth.guard';
 import { RoleGuard } from './auth/role.guard';
 import { ChatComponent } from './components/chat/chat.component';
+import { DoctorListComponent } from './components/lists/doctor list/doctor-list/doctor-list.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"/home", pathMatch:"full"},
@@ -20,6 +21,12 @@ const routes: Routes = [
     component: PatientListComponent,
     canActivate: [RoleGuard],
     data: { expectedRole: 'DOCTOR' }
+  },
+  {
+    path: "doctor-list",
+    component: DoctorListComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'PATIENT' }
   },
   {path: "chat",component:ChatComponent, canActivate: [AuthGuard]},
 ];

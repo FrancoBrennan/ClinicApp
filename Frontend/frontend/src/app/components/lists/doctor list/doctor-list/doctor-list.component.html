@@ -1,0 +1,40 @@
+<div class="doctor-list-container">
+    <h1>Doctor List</h1>
+    <table class="doctor-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Country</th>
+          <th>Username</th>
+          <th>License</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doctor of doctors">
+          <td>{{ doctor.firstname }}</td>
+          <td>{{ doctor.lastname }}</td>
+          <td>{{ doctor.country }}</td>
+          <td>{{ doctor.username }}</td>
+          <td>{{ doctor.license }}</td>
+          <td>
+            <button (click)="viewDoctorDetails(doctor)">View Details</button>
+            <button (click)="joinChat(doctor.username)">Join Chat</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="selectedDoctor" class="doctor-details">
+      <h2>Doctor Details</h2>
+      <p><strong>First Name:</strong> {{ selectedDoctor.firstname }}</p>
+      <p><strong>Last Name:</strong> {{ selectedDoctor.lastname }}</p>
+      <p><strong>Country:</strong> {{ selectedDoctor.country }}</p>
+      <p><strong>Username:</strong> {{ selectedDoctor.username }}</p>
+      <p><strong>License:</strong> {{ selectedDoctor.license }}</p>
+      <button (click)="closeDoctorDetails()">Close</button>
+    </div>
+  </div>
+  
+

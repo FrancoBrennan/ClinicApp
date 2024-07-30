@@ -15,8 +15,10 @@ import { JwtInterceptorService } from './services/auth/jwt-interceptor.service';
 import { ErrorInterceptorService } from './services/auth/error-interceptor.service';
 import { HomeComponent } from './pages/home/home/home.component';
 import { UserRegisterComponent } from './auth/register/userRegister/user-register.component';
-import { PatientListComponent } from './components/patient-list/patient-list/patient-list.component';
+import { PatientListComponent } from './components/lists/patient list/patient-list.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { SocketService } from './services/chat/socket.service';
+import { DoctorListComponent } from './components/lists/doctor list/doctor-list/doctor-list.component';
 
 
 
@@ -32,7 +34,8 @@ import { ChatComponent } from './components/chat/chat.component';
     UserRegisterComponent,
     HomeComponent,
     PatientListComponent,
-    ChatComponent
+    ChatComponent,
+    DoctorListComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { ChatComponent } from './components/chat/chat.component';
     provideHttpClient(),
     {provide:HTTP_INTERCEPTORS, useClass:JwtInterceptorService, multi:true}, //El multi=true significa que permite multiples hilos
     {provide:HTTP_INTERCEPTORS, useClass:ErrorInterceptorService, multi:true},
+    SocketService
   ],
   bootstrap: [AppComponent]
 })

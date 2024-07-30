@@ -1,110 +1,74 @@
 import express from 'express'
 import logger from 'morgan'
 import { Server } from 'socket.io'
-import { createServer } from 'node:http'
-import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
+import { createServer } from 'http'
 import cors from 'cors'
+import connection from './db.js'
 
-// dotenv.config()
-
-const port = process.env.PORT ?? 3000
+const port = process.env.PORT || 3000
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4200', // Permitir solicitudes desde tu cliente Angular
+    origin: 'http://localhost:4200',
     methods: ['GET', 'POST']
   },
   connectionStateRecovery: {}
 })
 
-// Middleware de CORS
 app.use(cors({
-  origin: 'http://localhost:4200' // Permitir solicitudes desde tu cliente Angular
+  origin: 'http://localhost:4200'
 }))
 
-// Inicializa la base de datos SQLite
-const dbPromise = open({
-  filename: './chat.db',
-  driver: sqlite3.Database
-});
+connection.connect(err => {
+  if (err) throw err
+  console.log('Database connected!')
+})
 
-// Configura la base de datos
-(async () => {
-  const db = await dbPromise
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS messages (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      content TEXT,
-      user TEXT
-    )
-  `)
-})()
+io.on('connection', (socket) => {
+  console.log('New client connected')
 
-io.on('connection', async (socket) => {
-  console.log('A user has connected!')
+  socket.on('joinRoom', (roomName) => {
+    socket.join(roomName)
+    console.log('User joined room', roomName)
+
+    // Recupera los mensajes históricos de la base de datos
+    connection.query('SELECT * FROM messages WHERE roomName = ?', [roomName], (err, results) => {
+      if (err) {
+        console.error('Error retrieving messages:', err)
+        return
+      }
+      console.log('Messages retrieved for room', roomName)
+      socket.emit('joinedRoom', { messages: results })
+    })
+  })
+
+  socket.on('chatMessage', (data) => {
+    const { message, roomName, username } = data
+    console.log('Received chatMessage:', data)
+
+    // Guardar mensaje en la base de datos
+    connection.query('INSERT INTO messages (roomName, username, message) VALUES (?, ?, ?)', [roomName, username, message], (err) => {
+      if (err) throw err
+
+      console.log('Message saved and emitted:', { text: message, username })
+      io.to(roomName).emit('receiveMessage', { text: message, username, serverOffset: Date.now(), roomName })
+    })
+  })
 
   socket.on('disconnect', () => {
-    console.log('A user has disconnected')
+    console.log('Client disconnected')
+    // Manejo de desconexión si es necesario
   })
 
-  socket.on('chat message', async (msg) => {
-    const db = await dbPromise
-    const username = socket.handshake.auth.username ?? 'anonymous'
-    let result
-
-    try {
-      result = await db.run('INSERT INTO messages (content, user) VALUES (?, ?)', [msg, username])
-    } catch (e) {
-      console.error(e)
-      return
-    }
-
-    // Broadcast del mensaje a todos los clientes
-    io.emit('chat message', msg, result.lastID.toString(), username)
+  socket.on('leaveRoom', (data) => {
+    const { roomName } = data
+    socket.leave(roomName)
+    console.log(`User left room: ${roomName}`)
   })
-
-  if (!socket.recovered) { // Recupera los mensajes sin conexión
-    try {
-      const db = await dbPromise
-      const rows = await db.all('SELECT id, content, user FROM messages WHERE id > ?', socket.handshake.auth.serverOffset ?? 0)
-
-      rows.forEach(row => {
-        socket.emit('chat message', row.content, row.id.toString(), row.user)
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }
 })
 
 app.use(logger('dev'))
-
-// Servir archivos estáticos desde la carpeta "client"
-app.use(express.static('client'))
-
-app.get('/', (req, res) => {
-  res.sendFile(process.cwd() + '/client/index.html')
-})
-
-// EndPoints para el login
-
-app.post('/login', (req, res) => {
-
-})
-
-app.post('/register', (req, res) => {
-
-})
-
-app.post('/logout', (req, res) => {
-
-})
-
-app.get('/protected', (req, res) => {
-
-})
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`)
