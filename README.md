@@ -9,8 +9,7 @@ ClinicApp is a web application designed to manage user registration and authenti
 - Patients will be able to view and modify their personal data.
 - Doctors will be able to view and modify their personal data and see patient data.
 - Role-based permission management (patient and doctor).
-- Live chat between doctors and patients.
-- Chat Rooms between doctors and patients.
+- Live chat between doctors and patients with Chat Rooms.
 
 ### Features in Development
 
