@@ -1,0 +1,99 @@
+.doctor-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .doctor-list-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 2em;
+  }
+  
+  .doctor-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .doctor-table thead {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .doctor-table th, .patient-table td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .doctor-table th {
+    font-size: 1.1em;
+  }
+  
+  .doctor-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .doctor-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .doctor-table button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    margin-right: 8px; /* Añade espacio entre los botones */
+  }
+
+  .doctor-table button:last-child {
+    margin-right: 0; /* Elimina el margen del último botón en cada celda */
+  }
+
+.doctor-table th.actions-header {
+    padding-left: 80px; /* Ajusta este valor según sea necesario */
+}
+
+  .doctor-table button:hover {
+    background-color: #218838;
+  }
+  
+  .doctor-details {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .doctor-details h2 {
+    margin-top: 0;
+    color: #007bff;
+  }
+  
+  .doctor-details p {
+    margin: 10px 0;
+    font-size: 1em;
+  }
+  
+  .doctor-details button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+  }
+  
+  .doctor-details button:hover {
+    background-color: #c82333;
+  }
+  

@@ -18,9 +18,6 @@
           <li *ngIf="userLoginOn && !isDoctor" class="nav-item">
             <a class="nav-link" routerLink="/doctor-list">Doctor List</a>
           </li>
-          <li *ngIf="userLoginOn" class="nav-item">
-            <a class="nav-link" routerLink="/chat">Chat</a>
-          </li>
           <li *ngIf="!userLoginOn" class="nav-item">
             <a class="nav-link" routerLink="/login">Log In</a>
           </li>

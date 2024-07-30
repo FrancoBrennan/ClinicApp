@@ -48,11 +48,12 @@ io.on('connection', (socket) => {
     console.log('Received chatMessage:', data)
 
     // Guardar mensaje en la base de datos
-    connection.query('INSERT INTO messages (roomName, username, message) VALUES (?, ?, ?)', [roomName, username, message], (err) => {
+    connection.query('INSERT INTO messages (roomName, username, message) VALUES (?, ?, ?)', [roomName, username, message], (err, result) => {
       if (err) throw err
 
-      console.log('Message saved and emitted:', { text: message, username })
-      io.to(roomName).emit('receiveMessage', { text: message, username, serverOffset: Date.now(), roomName })
+      const offset = result.insertId ? result.insertId.toString() : null
+      console.log('Message saved and emitted:', { text: message, username }, ' OFFSET: ', offset)
+      io.to(roomName).emit('receiveMessage', { text: message, username, serverOffset: offset, roomName })
     })
   })
 

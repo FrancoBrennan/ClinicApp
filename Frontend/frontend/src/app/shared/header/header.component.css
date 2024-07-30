@@ -6,6 +6,7 @@
     font-family: 'Arial', sans-serif; /* Fuente */
     position: relative; /* Posición relativa para el efecto de onda */
     z-index: 1; /* Capa z-index para asegurar que esté encima de otros elementos */
+    overflow: hidden; /* Asegura que los efectos de fondo no se desborden */
 }
 
 .header:before {
@@ -21,7 +22,7 @@
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
@@ -31,6 +32,15 @@
 .header-title-link {
     text-decoration: none; /* Sin subrayado */
     color: inherit; /* Hereda el color del contenedor */
+    display: flex;
+    align-items: center;
+}
+
+.header-icon {
+    width: 80px; /* Ancho del icono */
+    height: 80px; /* Alto del icono */
+    margin-right: 15px; /* Espaciado a la derecha del icono */
+    transition: transform 0.3s ease-in-out; /* Transición suave de transformación */
 }
 
 .header-title {
@@ -42,6 +52,10 @@
     transition: color 0.3s ease-in-out; /* Transición suave de color */
 }
 
-.header-title:hover {
+.header-title-link:hover .header-icon {
+    transform: scale(1.1); /* Escala el icono al pasar el mouse */
+}
+
+.header-title-link:hover .header-title {
     color: #ffffff; /* Cambio de color de texto al pasar el mouse */
 }

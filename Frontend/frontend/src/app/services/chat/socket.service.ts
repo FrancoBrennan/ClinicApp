@@ -31,7 +31,7 @@ export class SocketService {
     });
 
     this.socket.on('receiveMessage', (data: { text: string, username: string, serverOffset: number, roomName: string}) => {
-      this.serverOffsetSubject.next(data.serverOffset);
+      this.serverOffsetSubject.next(parseInt(data.serverOffset.toString(), 10));
       const currentMessages = this.messageSubject.getValue();
       this.messageSubject.next([...currentMessages, {
         room: data.roomName,

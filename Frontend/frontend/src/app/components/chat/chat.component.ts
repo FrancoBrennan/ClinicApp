@@ -13,6 +13,8 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('messages', { static: true }) messages!: ElementRef;
+  @ViewChild('comentarios', { static: true }) comentarios!: ElementRef;
+
   message: string = '';
   private unsubscribe$ = new Subject<void>();
 
@@ -20,12 +22,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   patientUsername: string | null = null;
   roomName=""
   private isInChat = false; // Flag to track if user is currently in the chat
+  private isNearBottom = true; // Flag to check if user is near the bottom
 
   constructor(
     private socketService: SocketService,
     private renderer: Renderer2,
-    private router: Router,
-    private sharedService:SharedService,
     private authService:AuthService
   ) { }
 
@@ -65,9 +66,17 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
     });
 
-    
+    /*
+    this.messages.nativeElement.addEventListener('scroll', () => {
+      const threshold = 150;
+      const position = this.messages.nativeElement.scrollTop + this.messages.nativeElement.offsetHeight;
+      const height = this.messages.nativeElement.scrollHeight;
+      this.isNearBottom = position > height - threshold;
+    });
+    */
   }
 
+  /*
   checkAndJoinRoom(): void {
     if (this.doctorUsername && this.patientUsername) {
       this.roomName = `chat-${this.doctorUsername.toString()}-${this.patientUsername.toString()}`;
@@ -77,7 +86,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       
     }
   }
-  
+  */
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -122,7 +131,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.renderer.appendChild(this.messages.nativeElement, comentariosDiv);
     
+    
     this.scrollToBottom()
+    
+    
   }
 
   private scrollToBottom(): void {

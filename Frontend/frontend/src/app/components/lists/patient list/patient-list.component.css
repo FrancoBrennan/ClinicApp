@@ -49,6 +49,15 @@
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s;
+    margin-right: 8px; /* Añade espacio entre los botones */
+  }
+
+  .patient-table button:last-child {
+    margin-right: 0; /* Elimina el margen del último botón en cada celda */
+  }
+
+  .patient-table th.actions-header {
+    padding-left: 90px; /* Ajusta este valor según sea necesario */
   }
   
   .patient-table button:hover {
@@ -62,6 +71,8 @@
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
+
+  
   
   .patient-details h2 {
     margin-top: 0;
