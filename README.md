@@ -14,6 +14,7 @@ ClinicApp is a web application designed to manage user registration and authenti
 ### Features in Development
 
 - **Improved Frontend**: Enhancing the user interface for a better user experience.
+- **Appointment Scheduling**: Allowing patients to schedule appointments with doctors.
 - **Server Deployment**: Preparing and configuring the application for deployment to a production server.
 
 ## Technologies Used
