@@ -18,12 +18,13 @@ export class PersonalDetailsComponent implements OnDestroy {
   userLoginOn: boolean = false;
   editMode: boolean = false;
   private subscriptions: Subscription = new Subscription();
+  isDoctor:boolean = false;
 
   registerForm = this.formBuilder.group({
-    id: [''],
     lastname: ['', Validators.required],
     firstname: ['', Validators.required],
-    country: ['', Validators.required]
+    country: ['', Validators.required],
+    license: [''] // Optional field for doctors
   });
 
   constructor(
@@ -34,8 +35,17 @@ export class PersonalDetailsComponent implements OnDestroy {
   ) {
     this.loadUserData();
     this.subscriptions.add(
-      this.authService.isLoggedIn().subscribe(userLoginOn => {
+        this.authService.isLoggedIn().subscribe(userLoginOn => {
+        
         this.userLoginOn = userLoginOn;
+        this.isDoctor = this.authService.getRole() === 'DOCTOR';
+
+        if (this.isDoctor) {
+          this.license.setValidators([Validators.required]);
+        } else {
+          this.license.clearValidators();
+        }
+        this.license.updateValueAndValidity();
 
         if (!userLoginOn) {
           this.clearForm();
@@ -55,10 +65,10 @@ export class PersonalDetailsComponent implements OnDestroy {
         next: userData => {
           this.user = userData;
           this.registerForm.setValue({
-            id: userData.id.toString(),
             firstname: userData.firstname,
             lastname: userData.lastname,
-            country: userData.country
+            country: userData.country,
+            license: userData.license
           });
         },
         error: errorData => {
@@ -82,15 +92,29 @@ export class PersonalDetailsComponent implements OnDestroy {
     return this.registerForm.controls.country;
   }
 
+  get license(){
+    return this.registerForm.controls.license;
+  }
+
   savePersonalDetailsData() {
     if (this.registerForm.valid) {
-      this.userService.updateUser(this.registerForm.value as unknown as User).subscribe({
+      const updatedUser: User = {
+        username: this.authService.getUsernameFromToken()!, // Asegúrate de incluir el nombre de usuario
+        firstname: this.registerForm.value.firstname!,
+        lastname: this.registerForm.value.lastname!,
+        country: this.registerForm.value.country!,
+        id: 0,
+        license: this.registerForm.value.license!,
+        role: this.authService.getRole() as string
+      };
+  
+      this.userService.updateUser(updatedUser).subscribe({
         next: () => {
           this.editMode = false;
-          this.user = this.registerForm.value as unknown as User;
+          this.user = updatedUser;
         },
         error: (errorData) => console.error(errorData)
-      })
+      });
     }
   }
 

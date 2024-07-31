@@ -19,6 +19,9 @@ import { PatientListComponent } from './components/lists/patient list/patient-li
 import { ChatComponent } from './components/chat/chat.component';
 import { SocketService } from './services/chat/socket.service';
 import { DoctorListComponent } from './components/lists/doctor list/doctor-list/doctor-list.component';
+import { TurnosPacientesComponent } from './pages/turnos/turnos-pacientes/turnos-pacientes.component';
+import { TurnosDoctoresComponent } from './pages/turnos/turnos-doctores/turnos-doctores.component';
+
 
 
 
@@ -35,7 +38,9 @@ import { DoctorListComponent } from './components/lists/doctor list/doctor-list/
     HomeComponent,
     PatientListComponent,
     ChatComponent,
-    DoctorListComponent
+    DoctorListComponent,
+    TurnosPacientesComponent,
+    TurnosDoctoresComponent
   ],
   imports: [
     BrowserModule,

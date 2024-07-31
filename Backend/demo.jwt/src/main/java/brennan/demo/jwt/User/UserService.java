@@ -1,6 +1,7 @@
 package brennan.demo.jwt.User;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -13,18 +14,24 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(UserRequest userRequest) {
-        Role role = Role.valueOf(userRequest.getRole().toUpperCase());
+        //Role role = Role.valueOf(userRequest.getRole().toUpperCase());
 
-        User user = User.builder()
-        .id(userRequest.id)
-        .firstname(userRequest.getFirstname())
-        .lastname(userRequest.lastname)
-        .country(userRequest.getCountry())
-        .license(userRequest.getLicense())
-        .role(role)
-        .build();
-        
-        userRepository.updateUser(user.id, user.firstname, user.lastname, user.country, user.license);
+        Optional<User> user = this.userRepository.findByUsername(userRequest.getUsername());
+
+        if(user.isPresent()){
+
+            User userUpdated = user.get();
+            userUpdated.setFirstname(userRequest.getFirstname());
+            userUpdated.setLastname(userRequest.getLastname());
+            userUpdated.setCountry(userRequest.getCountry());
+
+            // Update license only if the user is a doctor
+            
+            userUpdated.setLicense(userRequest.getLicense());
+            
+
+            this.userRepository.save(userUpdated); // Save the user
+        }
 
         return new UserResponse("El usuario se modificó satisfactoriamente");
     }
@@ -60,7 +67,7 @@ public class UserService {
             .firstname(user.firstname)
             .lastname(user.lastname)
             .country(user.country)
-            .license(user.getLicense())
+            .license(user.license)
             .role(user.role.toString())
             .build();
             return userDTO;
